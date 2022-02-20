@@ -1,0 +1,76 @@
+@page "/imperialtometricweight"
+@using WeightConverter.Data
+<PageTitle>Stones and Pounds to Kilograms</PageTitle>
+
+<h1>Stones and Pounds to Kilograms</h1>
+
+<EditForm Model="@weight">
+    <div class="row mb-4">
+        <div class="col">
+            <div class="form-group">
+                <label for="kg">Kilograms</label>
+                <p class="form-control" id="kg">@weight.Kilograms</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col">
+            <div class="form-group">
+                <label for="pounds">Pounds</label>
+                <InputNumber class="form-control" id="pounds" @bind-Value="pounds">s</InputNumber>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <p class="btn btn-primary" @onclick="HandlePoundsChange">Calculate</p>
+        </div>
+    </div>
+    <div class="row mb-4">
+        <div class="col">
+            <div class="form-group">
+                <div class="form-group">
+                    <label for="stones">Stones</label>
+                    <InputNumber class="form-control" id="stones" @bind-Value="stones"></InputNumber>
+                </div> 
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <div class="form-group">
+                    <label for="remaining-pounds">Pounds</label>
+                    <InputNumber class="form-control" id="remaining-pounds" @bind-Value="remainingPounds"></InputNumber>
+                </div> 
+            </div>
+        </div>
+    </div>
+        <div class="row">
+        <div class="col">
+            <p class="btn btn-primary" @onclick="HandleStonesAndPoundsChange">Calculate</p>
+        </div>
+    </div>
+</EditForm>
+    
+    
+
+@code{
+    private double pounds { get; set; } = 0;
+    private double stones { get; set; } = 0;
+    private double remainingPounds { get; set; } = 0;
+    private Weight weight { get; set; } = new Weight(0, WeightUnits.Kilograms);
+
+    private void HandlePoundsChange()
+    {
+        weight = new Weight(pounds, WeightUnits.Pounds);
+        stones = weight.StonesAndPounds.Stone;
+        remainingPounds = weight.StonesAndPounds.Pounds;
+    }
+
+      private void HandleStonesAndPoundsChange()
+    {
+        var totalPounds = Weight.StoneToPounds(stones) + remainingPounds;
+        weight = new Weight(totalPounds, WeightUnits.Pounds);
+        pounds = weight.Pounds;
+    }
+}

@@ -1,0 +1,59 @@
+﻿@page "/"
+@using WeightConverter.Data;
+<PageTitle>Kilograms to Stones and Pounds</PageTitle>
+
+<h1>Kilograms to Stones and Pounds</h1>
+
+<EditForm Model="@weight">
+    <div class="row mb-4">
+        <div class="col">
+            <div class="form-group">
+                <label for="kg">Kilograms</label>
+                <InputNumber class="form-control" id="kg" @bind-Value="kilograms"></InputNumber>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <p class="btn btn-primary" @onclick="HandleKgChange">Calculate</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label for="pounds">Pounds</label>
+                <p class="form-control" id="pounds">@weight.Pounds</p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <div class="form-group">
+                    <label for="stones">Stones</label>
+                    <p class="form-control" id="stones">@weight.StonesAndPounds.Stone</p>
+                </div> 
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <div class="form-group">
+                    <label for="remaining-pounds">Pounds</label>
+                    <p class="form-control" id="remaining-pounds">@weight.StonesAndPounds.Pounds</p>
+                </div> 
+            </div>
+        </div>
+    </div>
+</EditForm>
+    
+    
+
+@code{
+    private double kilograms { get; set; } = 0;
+    private Weight weight { get; set; } = new Weight(0, WeightUnits.Kilograms);
+
+    private void HandleKgChange()
+    {
+        weight = new Weight(kilograms, WeightUnits.Kilograms);
+    }
+}
